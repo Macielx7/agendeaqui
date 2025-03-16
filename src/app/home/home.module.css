@@ -1,0 +1,38 @@
+/* app/telaPrincipal/telaPrincipal.module.css */
+
+.bgDark {
+    background-color: #121212; /* Fundo escuro */
+    color: white; /* Cor do texto */
+    min-height: 100vh;
+  }
+  
+  .card {
+    background-color: #1f1f1f;
+    border-radius: 15px;
+  }
+  
+  .card-body {
+    padding: 30px;
+  }
+  
+  .titulo {
+    font-size: 2rem;
+    font-weight: bold;
+  }
+  
+  .botao {
+    border-radius: 12px;
+    padding: 12px;
+    font-size: 1.1rem;
+    transition: background-color 0.3s, transform 0.3s;
+  }
+  
+  .botao:hover {
+    transform: scale(1.05);
+  }
+  
+  .botao:focus {
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+  }
+  
