@@ -5,6 +5,7 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const usuarioRoutes = require('./routes/usuarioRoutes');
 const empresaRoutes = require('./routes/empresaRoutes'); // Importando as rotas da empresa
+const agendamentoRoutes = require('./routes/agendamentoRoutes'); // Importando as rotas da empresa
 const usuarioController = require('./controllers/usuarioController');
 
 dotenv.config();
@@ -23,8 +24,14 @@ mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopol
 
 // Usar as rotas de usuário
 app.use('/api/usuarios', usuarioRoutes);
-app.use('/api/empresas', empresaRoutes); // Usando as rotas da empresa
+
 app.post('/api/login', usuarioController.loginUsuario);  // Rota de login
+
+// rotas da empresa
+app.use('/api/empresas', empresaRoutes); 
+
+// Rotas de agendamento
+app.use('/api/agendamentos', agendamentoRoutes);
 
 // Iniciar o servidor
 app.listen(port, () => {

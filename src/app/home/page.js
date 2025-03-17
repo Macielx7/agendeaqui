@@ -37,12 +37,13 @@ export default function TelaPrincipal() {
 
   if (erro) {
     return (
-      <div className={styles.bgDark}>
+      
+      <div className={styles.bgGradient}>
         <MenuNavegacao />
         <Container fluid className="mt-5">
           <Row className="justify-content-center">
             <Col xs={12} sm={8} md={6} lg={4}>
-              <Card className="mb-4 shadow-lg rounded-lg">
+              <Card className={`${styles.card} shadow-lg`}>
                 <Card.Body>
                   <h2 className={styles.tituloErro}>Erro</h2>
                   <p className="text-center text-danger">{erro}</p>
@@ -57,12 +58,12 @@ export default function TelaPrincipal() {
 
   if (loading) {
     return (
-      <div className={styles.bgDark}>
+      <div className={styles.bgGradient}>
         <MenuNavegacao />
         <Container fluid className="mt-5">
           <Row className="justify-content-center">
             <Col xs={12} sm={8} md={6} lg={4}>
-              <Card className="mb-4 shadow-lg rounded-lg">
+              <Card className={`${styles.card} shadow-lg`}>
                 <Card.Body>
                   <div className="text-center">
                     <Spinner animation="border" variant="primary" />
@@ -78,24 +79,22 @@ export default function TelaPrincipal() {
   }
 
   return (
-    <div className={styles.bgDark}>
+    <div className={styles.bgGradient}>
       <MenuNavegacao />
       <Container fluid className="mt-5">
         <Row className="justify-content-center">
           <Col xs={12} sm={8} md={6} lg={4}>
-            <Card className="mb-4 shadow-lg rounded-lg">
+            <Card className={`${styles.card} shadow-lg`}>
               <Card.Body>
                 <h2 className={styles.titulo}>Bem-vindo, {usuario.nome}!</h2>
-                <p className="text-center text-muted">
+                <p className="text-center text-muted mb-4">
                   Você faz parte da empresa <strong>{empresa.nome}</strong> ({empresa.cnpj}).
                 </p>
-                <div className="d-flex justify-content-between">
-                  <Button variant="primary" className={`${styles.botao} w-100`} href="/agendar">
+                <div className="d-grid gap-3">
+                  <Button variant="primary" className={styles.botao} href="/agendar">
                     Agendar Novo Compromisso
                   </Button>
-                </div>
-                <div className="d-flex justify-content-between mt-3">
-                  <Button variant="secondary" className={`${styles.botao} w-100`} href="/meus-agendamentos">
+                  <Button variant="secondary" className={styles.botao} href="/meus-agendamentos">
                     Meus Agendamentos
                   </Button>
                 </div>

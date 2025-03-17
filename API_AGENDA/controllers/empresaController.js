@@ -4,8 +4,38 @@ const Empresa = require('../models/Empresa');
 // Criar nova empresa
 exports.criarEmpresa = async (req, res) => {
   try {
-    const { nome, cnpj } = req.body;
-    const novaEmpresa = new Empresa({ nome, cnpj });
+    const {
+      razaoSocial,
+      nomeFantasia,
+      cnpj,
+      inscricaoEstadual,
+      inscricaoMunicipal,
+      endereco,
+      telefone,
+      email,
+      site,
+      atividadePrincipal,
+      dataFundacao,
+      situacaoCadastral,
+      regimeTributario,
+    } = req.body;
+
+    const novaEmpresa = new Empresa({
+      razaoSocial,
+      nomeFantasia,
+      cnpj,
+      inscricaoEstadual,
+      inscricaoMunicipal,
+      endereco,
+      telefone,
+      email,
+      site,
+      atividadePrincipal,
+      dataFundacao,
+      situacaoCadastral,
+      regimeTributario,
+    });
+
     await novaEmpresa.save();
     res.status(201).json({ message: 'Empresa criada com sucesso', empresa: novaEmpresa });
   } catch (err) {
@@ -37,12 +67,42 @@ exports.getEmpresaPorId = async (req, res) => {
 // Atualizar empresa
 exports.atualizarEmpresa = async (req, res) => {
   try {
-    const { nome, cnpj } = req.body;
+    const {
+      razaoSocial,
+      nomeFantasia,
+      cnpj,
+      inscricaoEstadual,
+      inscricaoMunicipal,
+      endereco,
+      telefone,
+      email,
+      site,
+      atividadePrincipal,
+      dataFundacao,
+      situacaoCadastral,
+      regimeTributario,
+    } = req.body;
+
     const empresaAtualizada = await Empresa.findByIdAndUpdate(
       req.params.id,
-      { nome, cnpj },
-      { new: true }
+      {
+        razaoSocial,
+        nomeFantasia,
+        cnpj,
+        inscricaoEstadual,
+        inscricaoMunicipal,
+        endereco,
+        telefone,
+        email,
+        site,
+        atividadePrincipal,
+        dataFundacao,
+        situacaoCadastral,
+        regimeTributario,
+      },
+      { new: true } // Retorna o documento atualizado
     );
+
     if (!empresaAtualizada) return res.status(404).json({ message: 'Empresa não encontrada' });
     res.status(200).json({ message: 'Empresa atualizada com sucesso', empresa: empresaAtualizada });
   } catch (err) {

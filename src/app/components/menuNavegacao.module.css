@@ -1,20 +1,47 @@
-/* app/components/menuNavegacao.module.css */
-
 .navbar {
-    border-radius: 0 0 20px 20px; /* Borda arredondada na parte inferior */
-  }
-  
-  .navbar-brand {
-    font-size: 1.8rem;
-    font-weight: bold;
-  }
-  
-  .nav-link {
-    font-size: 1.1rem;
-    margin-right: 20px;
-  }
-  
-  .nav-link:hover {
-    text-decoration: underline;
-  }
-  
+  border-radius: 0 0 20px 20px; /* Borda arredondada na parte inferior */
+  padding: 10px 0; /* Espaçamento interno */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra suave */
+}
+
+.brandContainer {
+  display: flex;
+  align-items: center; /* Alinha a logo e o texto verticalmente */
+}
+
+.logo {
+  margin-right: 10px; /* Espaço entre a logo e o texto */
+  border-radius: 50%; /* Deixa a logo redonda (opcional) */
+  transition: transform 0.3s ease; /* Animação suave ao passar o mouse */
+}
+
+.logo:hover {
+  transform: scale(1.1); /* Efeito de zoom ao passar o mouse */
+}
+
+.brandText {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #fff; /* Cor do texto */
+}
+
+.navLink {
+  font-size: 1.1rem;
+  margin-right: 20px;
+  color: #fff; /* Cor do texto */
+  transition: color 0.3s ease, text-decoration 0.3s ease; /* Transição suave */
+}
+
+.navLink:hover {
+  color: #28a745; /* Cor ao passar o mouse */
+  text-decoration: underline;
+}
+
+/* Estilo para o botão de toggle em telas pequenas */
+.navbar-toggler {
+  border-color: rgba(255, 255, 255, 0.1); /* Cor da borda */
+}
+
+.navbar-toggler-icon {
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(255, 255, 255, 0.8)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+}
