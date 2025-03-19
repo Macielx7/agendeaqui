@@ -1,17 +1,13 @@
+// routes/agendamentoRoutes.js
 const express = require('express');
-const agendamentoController = require('../controllers/agendamentoController');
 const router = express.Router();
+const agendamentoController = require('../controllers/agendamentoController');
 
-// Criar um novo agendamento
-router.post('/', agendamentoController.criarAgendamento);
-
-// Listar todos os agendamentos de uma empresa
-router.get('/empresa/:empresaId', agendamentoController.listarAgendamentos);
-
-// Atualizar um agendamento
-router.put('/:id', agendamentoController.atualizarAgendamento);
-
-// Deletar um agendamento
-router.delete('/:id', agendamentoController.deletarAgendamento);
+// Rotas para agendamentos
+router.post('/', agendamentoController.createAgendamento);
+router.get('/', agendamentoController.getAgendamentos);
+router.get('/:id', agendamentoController.getAgendamentoById);
+router.put('/:id', agendamentoController.updateAgendamento);
+router.delete('/:id', agendamentoController.deleteAgendamento);
 
 module.exports = router;

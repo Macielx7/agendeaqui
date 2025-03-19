@@ -14,7 +14,7 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     try {
       // Enviar requisição POST para a API de login
       const res = await fetch('http://localhost:5000/api/login', {
@@ -24,9 +24,10 @@ export default function Login() {
         },
         body: JSON.stringify({ email, senha }),
       });
-
+  
       const data = await res.json();
-
+      console.log('Resposta do backend:', data); // Adicione este log
+  
       if (res.status === 200) {
         // Se o login for bem-sucedido, armazene o usuário na sessão e redirecione
         sessionStorage.setItem('usuario', JSON.stringify(data.usuario));
@@ -39,7 +40,7 @@ export default function Login() {
       setErro('Erro ao se conectar com o servidor');
     }
   };
-
+  
   return (
     <Container fluid className={styles.container}>
       <Row className="justify-content-center">

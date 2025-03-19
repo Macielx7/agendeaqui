@@ -18,22 +18,57 @@ export default function Agendar() {
   const [sucesso, setSucesso] = useState('');
   const router = useRouter();
 
+  // Função para validar CPF (formato simples)
+  const validarCPF = (cpf) => {
+    const cpfRegex = /^\d{3}\.\d{3}\.\d{3}-\d{2}$/;
+    return cpfRegex.test(cpf);
+  };
+
+  // Função para validar telefone (formato simples)
+  const validarTelefone = (telefone) => {
+    const telefoneRegex = /^\(\d{2}\) \d{4,5}-\d{4}$/;
+    return telefoneRegex.test(telefone);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Validação simples
+  
+    // Verifica se o usuário está logado
+    const usuarioLogado = JSON.parse(sessionStorage.getItem('usuario'));
+    console.log('Usuário logado:', usuarioLogado);
+  
+    if (!usuarioLogado || !usuarioLogado._id || !usuarioLogado.empresaId) {
+      setErro('Usuário não autenticado. Faça login novamente.');
+      return;
+    }
+  
+    // Validação dos campos
     if (!data || !hora || !descricao || !nomeCliente || !cpf || !telefone) {
       setErro('Por favor, preencha todos os campos.');
       return;
     }
-
+  
+    // Validação do CPF
+    if (!validarCPF(cpf)) {
+      setErro('CPF inválido. Formato esperado: 123.456.789-00');
+      return;
+    }
+  
+    // Validação do telefone
+    if (!validarTelefone(telefone)) {
+      setErro('Telefone inválido. Formato esperado: (99) 99999-9999');
+      return;
+    }
+  
     setLoading(true);
     setErro('');
     setSucesso('');
-
+  
     try {
-      const usuarioLogado = JSON.parse(sessionStorage.getItem('usuario'));
-
+      // Formatar data e hora para o formato esperado pelo backend
+      const dataFormatada = new Date(data).toISOString().split('T')[0]; // Formato YYYY-MM-DD
+      const horaFormatada = hora; // Já está no formato HH:MM
+  
       // Enviar requisição POST para a API de agendamento
       const response = await fetch('http://localhost:5000/api/agendamentos', {
         method: 'POST',
@@ -41,34 +76,35 @@ export default function Agendar() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          data,
-          hora,
+          titulo: `Agendamento para ${nomeCliente}`,
           descricao,
-          nomeCliente,
-          cpf,
-          telefone,
-          usuarioId: usuarioLogado.id,
+          dataInicio: `${dataFormatada}T${horaFormatada}:00.000Z`,
+          dataFim: `${dataFormatada}T${horaFormatada}:00.000Z`,
+          usuarioId: usuarioLogado._id, // Usar _id em vez de id
           empresaId: usuarioLogado.empresaId,
         }),
       });
-
+  
       const dataResponse = await response.json();
-
+  
       if (response.status === 201) {
         setSucesso('Agendamento realizado com sucesso!');
+        // Limpar os campos após o sucesso
         setData('');
         setHora('');
         setDescricao('');
         setNomeCliente('');
         setCpf('');
         setTelefone('');
+        // Redirecionar após 2 segundos
         setTimeout(() => {
-          router.push('/meus-agendamentos'); // Redirecionar após o sucesso
+          router.push('/meus-agendamentos');
         }, 2000);
       } else {
         setErro(dataResponse.message || 'Erro ao realizar o agendamento.');
       }
     } catch (err) {
+      console.error('Erro na requisição:', err);
       setErro('Erro ao se conectar com o servidor.');
     } finally {
       setLoading(false);
@@ -125,7 +161,7 @@ export default function Agendar() {
                     <Form.Label>CPF</Form.Label>
                     <Form.Control
                       type="text"
-                      placeholder="Digite o CPF do cliente"
+                      placeholder="Digite o CPF do cliente (123.456.789-00)"
                       value={cpf}
                       onChange={(e) => setCpf(e.target.value)}
                       required
@@ -137,7 +173,7 @@ export default function Agendar() {
                     <Form.Label>Telefone</Form.Label>
                     <Form.Control
                       type="text"
-                      placeholder="Digite o telefone do cliente"
+                      placeholder="Digite o telefone do cliente ((99) 99999-9999)"
                       value={telefone}
                       onChange={(e) => setTelefone(e.target.value)}
                       required

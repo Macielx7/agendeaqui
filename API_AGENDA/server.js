@@ -3,35 +3,42 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv');
+
+// Importando as rotas
 const usuarioRoutes = require('./routes/usuarioRoutes');
-const empresaRoutes = require('./routes/empresaRoutes'); // Importando as rotas da empresa
-const agendamentoRoutes = require('./routes/agendamentoRoutes'); // Importando as rotas da empresa
+const empresaRoutes = require('./routes/empresaRoutes');
+const agendamentoRoutes = require('./routes/agendamentoRoutes');
+
+// Importando o controller de usuário para a rota de login
 const usuarioController = require('./controllers/usuarioController');
 
+// Carregando variáveis de ambiente
 dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 5000;
 
-// Usando CORS para permitir requisições
-app.use(cors());
-app.use(express.json()); // Para fazer parse de JSON no corpo da requisição
+// Middlewares
+// Permitir requisições de qualquer origem (ou especifique a origem do front-end)
+app.use(cors({
+  origin: 'http://localhost:3000', // Substitua pela URL do seu front-end
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+}));
+app.use(express.json()); // Fazer parse de JSON no corpo da requisição
 
 // Conectar ao MongoDB
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('Conectado ao MongoDB'))
   .catch((err) => console.error('Erro de conexão com MongoDB:', err));
 
-// Usar as rotas de usuário
-app.use('/api/usuarios', usuarioRoutes);
+// Rotas
+app.use('/api/usuarios', usuarioRoutes); // Rotas de usuário
+app.use('/api/empresas', empresaRoutes); // Rotas de empresa
+app.use('/api/agendamentos', agendamentoRoutes); // Rotas de agendamento
 
-app.post('/api/login', usuarioController.loginUsuario);  // Rota de login
-
-// rotas da empresa
-app.use('/api/empresas', empresaRoutes); 
-
-// Rotas de agendamento
-app.use('/api/agendamentos', agendamentoRoutes);
+// Rota de login
+app.post('/api/login', usuarioController.loginUsuario);
 
 // Iniciar o servidor
 app.listen(port, () => {
