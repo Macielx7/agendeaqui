@@ -25,6 +25,7 @@ export default function MenuNavegacao() {
           <Nav className="ms-auto"> {/* Alinhar os links à direita */}
             <Nav.Link as={Link} href="/agendar" className={styles.navLink}>Agendar</Nav.Link>
             <Nav.Link as={Link} href="/meus-agendamentos" className={styles.navLink}>Meus Agendamentos</Nav.Link>
+            <Nav.Link as={Link} href="/colaboradores" className={styles.navLink}>Colaboradores</Nav.Link>
             <Nav.Link as={Link} href="/configuracoes" className={styles.navLink}>Configurações</Nav.Link>
           </Nav>
         </Navbar.Collapse>

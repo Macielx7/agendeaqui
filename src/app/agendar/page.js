@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Container, Row, Col, Form, Button, Card, Spinner, Alert } from 'react-bootstrap';
+import { IMaskInput } from 'react-imask'; // Importando o IMaskInput
 import MenuNavegacao from '../components/MenuNavegacao'; // Importando o Menu de Navegação
 import styles from './agendar.module.css'; // Importando o arquivo CSS
 
@@ -160,10 +161,11 @@ export default function Agendar() {
                   <Form.Group controlId="formCpf" className="mb-3">
                     <Form.Label>CPF</Form.Label>
                     <Form.Control
-                      type="text"
-                      placeholder="Digite o CPF do cliente (123.456.789-00)"
+                      as={IMaskInput}
+                      mask="000.000.000-00"
                       value={cpf}
                       onChange={(e) => setCpf(e.target.value)}
+                      placeholder="Digite o CPF do cliente (123.456.789-00)"
                       required
                       className={styles.input}
                     />
@@ -172,10 +174,11 @@ export default function Agendar() {
                   <Form.Group controlId="formTelefone" className="mb-3">
                     <Form.Label>Telefone</Form.Label>
                     <Form.Control
-                      type="text"
-                      placeholder="Digite o telefone do cliente ((99) 99999-9999)"
+                      as={IMaskInput}
+                      mask="(00) 00000-0000"
                       value={telefone}
                       onChange={(e) => setTelefone(e.target.value)}
+                      placeholder="Digite o telefone do cliente ((99) 99999-9999)"
                       required
                       className={styles.input}
                     />

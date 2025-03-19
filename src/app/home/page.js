@@ -1,9 +1,9 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Container, Row, Col, Card, Button, Spinner } from 'react-bootstrap';
-import MenuNavegacao from '../components/MenuNavegacao'; // Importando o Menu de Navegação
-import styles from './home.module.css'; // Importando o arquivo CSS
+import { Container, Row, Col, Card, Button, Spinner, Alert } from 'react-bootstrap';
+import MenuNavegacao from '../components/MenuNavegacao';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 export default function TelaPrincipal() {
   const [usuario, setUsuario] = useState(null);
@@ -13,19 +13,16 @@ export default function TelaPrincipal() {
 
   useEffect(() => {
     const usuarioLogado = sessionStorage.getItem('usuario');
-    
     if (usuarioLogado) {
       const usuario = JSON.parse(usuarioLogado);
       setUsuario(usuario);
-
-      // Buscar informações da empresa associada ao usuário
       fetch(`http://localhost:5000/api/empresas/${usuario.empresaId}`)
         .then((response) => response.json())
         .then((data) => {
           setEmpresa(data);
           setLoading(false);
         })
-        .catch((err) => {
+        .catch(() => {
           setErro('Erro ao buscar os dados da empresa');
           setLoading(false);
         });
@@ -37,18 +34,15 @@ export default function TelaPrincipal() {
 
   if (erro) {
     return (
-      
-      <div className={styles.bgGradient}>
+      <div className="bg-light vh-100">
         <MenuNavegacao />
-        <Container fluid className="mt-5">
-          <Row className="justify-content-center">
-            <Col xs={12} sm={8} md={6} lg={4}>
-              <Card className={`${styles.card} shadow-lg`}>
-                <Card.Body>
-                  <h2 className={styles.tituloErro}>Erro</h2>
-                  <p className="text-center text-danger">{erro}</p>
-                </Card.Body>
-              </Card>
+        <Container className="d-flex justify-content-center align-items-center h-100">
+          <Row className="w-100 justify-content-center">
+            <Col xs={12} md={6} lg={4}>
+              <Alert variant="danger" className="text-center">
+                <h4>Erro</h4>
+                <p>{erro}</p>
+              </Alert>
             </Col>
           </Row>
         </Container>
@@ -58,43 +52,32 @@ export default function TelaPrincipal() {
 
   if (loading) {
     return (
-      <div className={styles.bgGradient}>
+      <div className="bg-light vh-100">
         <MenuNavegacao />
-        <Container fluid className="mt-5">
-          <Row className="justify-content-center">
-            <Col xs={12} sm={8} md={6} lg={4}>
-              <Card className={`${styles.card} shadow-lg`}>
-                <Card.Body>
-                  <div className="text-center">
-                    <Spinner animation="border" variant="primary" />
-                    <p className="text-muted mt-3">Carregando...</p>
-                  </div>
-                </Card.Body>
-              </Card>
-            </Col>
-          </Row>
+        <Container className="d-flex justify-content-center align-items-center h-100">
+          <Spinner animation="border" variant="primary" />
         </Container>
       </div>
     );
   }
 
   return (
-    <div className={styles.bgGradient}>
+    <div className="bg-light min-vh-100">
       <MenuNavegacao />
-      <Container fluid className="mt-5">
-        <Row className="justify-content-center">
-          <Col xs={12} sm={8} md={6} lg={4}>
-            <Card className={`${styles.card} shadow-lg`}>
-              <Card.Body>
-                <h2 className={styles.titulo}>Bem-vindo, {usuario.nome}!</h2>
-                <p className="text-center text-muted mb-4">
+      <Container className="mt-5 d-flex justify-content-center align-items-center h-100">
+        <Row className="w-100 justify-content-center">
+          <Col xs={12} md={6} lg={4}>
+            <Card className="shadow-lg p-4 rounded-3">
+              <Card.Body className="text-center">
+                <h2 className="fw-bold">Bem-vindo, {usuario.nome}!</h2>
+                <p className="text-muted">
                   Você faz parte da empresa <strong>{empresa.nome}</strong> ({empresa.cnpj}).
                 </p>
                 <div className="d-grid gap-3">
-                  <Button variant="primary" className={styles.botao} href="/agendar">
+                  <Button variant="primary" href="/agendar">
                     Agendar Novo Compromisso
                   </Button>
-                  <Button variant="secondary" className={styles.botao} href="/meus-agendamentos">
+                  <Button variant="secondary" href="/meus-agendamentos">
                     Meus Agendamentos
                   </Button>
                 </div>

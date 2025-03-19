@@ -2,9 +2,9 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Container, Row, Col, Form, Button, Card } from 'react-bootstrap';
-import styles from './login.module.css'; // Importando o CSS atualizado
-import Image from 'next/image'; // Importe o componente Image do Next.js
+import { Container, Row, Col, Form, Button, Card, Alert } from 'react-bootstrap';
+import Image from 'next/image';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -14,81 +14,58 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
     try {
-      // Enviar requisição POST para a API de login
       const res = await fetch('http://localhost:5000/api/login', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, senha }),
       });
-  
       const data = await res.json();
-      console.log('Resposta do backend:', data); // Adicione este log
-  
       if (res.status === 200) {
-        // Se o login for bem-sucedido, armazene o usuário na sessão e redirecione
         sessionStorage.setItem('usuario', JSON.stringify(data.usuario));
         router.push('/home');
       } else {
-        // Se a resposta for um erro
         setErro(data.message || 'Erro ao realizar o login');
       }
     } catch (err) {
       setErro('Erro ao se conectar com o servidor');
     }
   };
-  
+
   return (
-    <Container fluid className={styles.container}>
-      <Row className="justify-content-center">
-        <Col xs={12}>
-          <Card className={styles.card}>
-            <Card.Body className={styles.cardBody}>
+    <Container fluid className="d-flex vh-100 justify-content-center align-items-center bg-light">
+      <Row className="w-100 justify-content-center">
+        <Col xs={12} md={6} lg={4}>
+          <Card className="shadow-lg p-4 rounded-3">
+            <Card.Body>
               <div className="text-center mb-4">
-                {/* Adicionando a logo */}
-                <div className={styles.logoContainer}>
-                  <Image
-                    src="/logo.png" // Caminho relativo da imagem
-                    alt="Logo da Empresa"
-                    width={210} // Largura da logo
-                    height={200} // Altura da logo
-                    className={styles.logo}
-                  />
-                </div>
-                <h1 className={styles.title}>Agenda Facil</h1>
-                <p className={styles.textMuted}>Faça login para continuar</p>
+                <Image src="/logo.png" alt="Logo" width={150} height={150} className="mb-3" />
+                <h2 className="fw-bold">Agenda Fácil</h2>
+                <p className="text-muted">Faça login para continuar</p>
               </div>
+              {erro && <Alert variant="danger" className="text-center">{erro}</Alert>}
               <Form onSubmit={handleSubmit}>
                 <Form.Group controlId="formBasicEmail" className="mb-3">
-                  <Form.Label className={styles.label}>Email</Form.Label>
+                  <Form.Label>Email</Form.Label>
                   <Form.Control
                     type="email"
                     placeholder="Digite seu email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
-                    className={styles.input}
                   />
                 </Form.Group>
-
                 <Form.Group controlId="formBasicPassword" className="mb-3">
-                  <Form.Label className={styles.label}>Senha</Form.Label>
+                  <Form.Label>Senha</Form.Label>
                   <Form.Control
                     type="password"
                     placeholder="Digite sua senha"
                     value={senha}
                     onChange={(e) => setSenha(e.target.value)}
                     required
-                    className={styles.input}
                   />
                 </Form.Group>
-
-                {erro && <div className={styles.errorMessage}>{erro}</div>}
-
-                <Button variant="primary" type="submit" className={styles.btnLogin}>
+                <Button variant="primary" type="submit" className="w-100">
                   Entrar
                 </Button>
               </Form>

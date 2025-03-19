@@ -8,6 +8,7 @@ const dotenv = require('dotenv');
 const usuarioRoutes = require('./routes/usuarioRoutes');
 const empresaRoutes = require('./routes/empresaRoutes');
 const agendamentoRoutes = require('./routes/agendamentoRoutes');
+const colaboraradorRoutes = require('./routes/colaboradorRoutes');
 
 // Importando o controller de usuário para a rota de login
 const usuarioController = require('./controllers/usuarioController');
@@ -36,6 +37,7 @@ mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopol
 app.use('/api/usuarios', usuarioRoutes); // Rotas de usuário
 app.use('/api/empresas', empresaRoutes); // Rotas de empresa
 app.use('/api/agendamentos', agendamentoRoutes); // Rotas de agendamento
+app.use('/api/colaboradores', colaboraradorRoutes); // rotas de colaborador
 
 // Rota de login
 app.post('/api/login', usuarioController.loginUsuario);
