@@ -18,6 +18,21 @@ const agendamentoSchema = new mongoose.Schema({
     type: Date,
     required: true
   },
+  nomeCliente: {
+    type: String,
+    required: true
+  },
+  cpfCliente: {
+    type: String,
+    required: true
+  },
+  telefoneCliente: {
+    type: String,
+    required: true
+  },
+  emailCliente: {
+    type: String,
+  },
   usuarioId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Usuario',

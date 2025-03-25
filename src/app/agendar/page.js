@@ -81,9 +81,13 @@ export default function Agendar() {
           descricao,
           dataInicio: `${dataFormatada}T${horaFormatada}:00.000Z`,
           dataFim: `${dataFormatada}T${horaFormatada}:00.000Z`,
-          usuarioId: usuarioLogado._id, // Usar _id em vez de id
+          nomeCliente,
+          cpfCliente: cpf,
+          telefoneCliente: telefone,
+          usuarioId: usuarioLogado._id,
           empresaId: usuarioLogado.empresaId,
         }),
+        
       });
   
       const dataResponse = await response.json();

@@ -1,0 +1,14 @@
+.descricaoLimitada {
+    display: -webkit-box;
+    -webkit-line-clamp: 3; /* Limita a 3 linhas */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .colunaLarga {
+    min-width: 160px;
+    max-width: 200px;
+    word-break: break-word;
+  }
+  
