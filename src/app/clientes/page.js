@@ -1,24 +1,22 @@
-'use client';
-
-import { useState, useEffect } from 'react';
-import {
-  Table, Button, Modal, Form, Alert, Spinner
-} from 'react-bootstrap';
+'use client'
+import { useEffect, useState } from 'react';
+import { Table, Button, Modal, Form, Alert, Spinner } from 'react-bootstrap';
+import apiAGENDAFLOW from 'src/services/apiAGENDAFLOW';
 import { FaTrash, FaEdit, FaPlus } from 'react-icons/fa';
-import MenuNavegacao from '../components/MenuNavegacao';
-import apiAGENDAFLOW from '../../services/apiAGENDAFLOW';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import MenuNavegacao from '../components/MenuNavegacao';
 
-export default function Colaboradores() {
-  const [colaboradores, setColaboradores] = useState([]);
+export default function Clientes() {
+  const [clientes, setClientes] = useState([]);
   const [mostrarModal, setMostrarModal] = useState(false);
   const [modoEdicao, setModoEdicao] = useState(false);
-  const [colaboradorEditando, setColaboradorEditando] = useState(null);
-  const [form, setForm] = useState({ nome: '', cargo: '', email: '', telefone: '' });
+  const [clienteEditando, setClienteEditando] = useState(null);
+  const [form, setForm] = useState({ nome: '', email: '', telefone: '' });
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState(null);
   const [collapsed, setCollapsed] = useState(false);
+
   const [usuario, setUsuario] = useState(null);
 
   useEffect(() => {
@@ -32,60 +30,62 @@ export default function Colaboradores() {
 
   useEffect(() => {
     if (usuario) {
-      carregarColaboradores();
+      carregarClientes();
     }
   }, [usuario]);
 
-  const carregarColaboradores = async () => {
+
+
+  const carregarClientes = async () => {
     try {
-      const resposta = await apiAGENDAFLOW.get('/colaboradores', { params: { empresa_id: usuario.empresa_id } });
-      setColaboradores(resposta.data);
+      const resposta = await apiAGENDAFLOW.get('/clientes', { params: { empresa_id: usuario.empresa_id } });
+      setClientes(resposta.data);
     } catch (error) {
-      setErro('Erro ao carregar colaboradores');
+      setErro('Erro ao carregar clientes');
     } finally {
       setCarregando(false);
     }
   };
 
-  const abrirModal = (colaborador = null) => {
-    if (colaborador) {
+  const abrirModal = (cliente = null) => {
+    if (cliente) {
       setModoEdicao(true);
-      setColaboradorEditando(colaborador);
-      setForm({ nome: colaborador.nome, cargo: colaborador.cargo, email: colaborador.email, telefone: colaborador.telefone });
+      setClienteEditando(cliente);
+      setForm({ nome: cliente.nome, email: cliente.email, telefone: cliente.telefone });
     } else {
       setModoEdicao(false);
-      setColaboradorEditando(null);
-      setForm({ nome: '', cargo: '', email: '', telefone: '' });
+      setClienteEditando(null);
+      setForm({ nome: '', email: '', telefone: '' });
     }
     setMostrarModal(true);
   };
 
-  const salvarColaborador = async (e) => {
+  const salvarCliente = async (e) => {
     e.preventDefault();
     try {
       const dados = { ...form, empresa_id: usuario.empresa_id };
-      if (modoEdicao && colaboradorEditando) {
-        await apiAGENDAFLOW.put(`/colaboradores/${colaboradorEditando.id}`, dados);
-        toast.success('Colaborador atualizado');
+      if (modoEdicao && clienteEditando) {
+        await apiAGENDAFLOW.put(`/clientes/${clienteEditando.id}`, dados);
+        toast.success('Cliente atualizado');
       } else {
-        await apiAGENDAFLOW.post('/colaboradores', dados);
-        toast.success('Colaborador criado');
+        await apiAGENDAFLOW.post('/clientes', dados);
+        toast.success('Cliente criado');
       }
       setMostrarModal(false);
-      carregarColaboradores();
+      carregarClientes();
     } catch (error) {
-      toast.error('Erro ao salvar colaborador');
+      toast.error('Erro ao salvar cliente');
     }
   };
 
-  const deletarColaborador = async (id) => {
-    if (confirm('Deseja excluir este colaborador?')) {
+  const deletarCliente = async (id) => {
+    if (confirm('Deseja excluir este cliente?')) {
       try {
-        await apiAGENDAFLOW.delete(`/colaboradores/${id}`);
-        toast.success('Colaborador excluído');
-        carregarColaboradores();
+        await apiAGENDAFLOW.delete(`/clientes/${id}`);
+        toast.success('Cliente excluído');
+        carregarClientes();
       } catch (error) {
-        toast.error('Erro ao excluir colaborador');
+        toast.error('Erro ao excluir cliente');
       }
     }
   };
@@ -97,7 +97,7 @@ export default function Colaboradores() {
       <div
         className='bg-dark'
         style={{
-          marginLeft: collapsed ? '60px' : '170px',
+          marginLeft: collapsed ? '60px' : '170px', // Ajusta dinamicamente
           padding: '20px',
           transition: 'margin-left 0.3s ease',
           minHeight: 'calc(100vh - 80px)',
@@ -105,7 +105,7 @@ export default function Colaboradores() {
         }}
       >
         <div className="p-4 bg-light" style={{ minHeight: '100vh' }}>
-          <h2 className="mb-4">Gerenciamento de Colaboradores</h2>
+          <h2 className="mb-4">Gerenciamento de Clientes</h2>
 
           {carregando ? (
             <div className="d-flex justify-content-center align-items-center">
@@ -116,30 +116,28 @@ export default function Colaboradores() {
           ) : (
             <>
               <Button variant="primary" className="mb-3" onClick={() => abrirModal()}>
-                <FaPlus className="me-2" /> Novo Colaborador
+                <FaPlus className="me-2" /> Novo Cliente
               </Button>
               <Table bordered hover responsive>
                 <thead className="table-dark">
                   <tr>
                     <th>Nome</th>
-                    <th>Cargo</th>
                     <th>Email</th>
                     <th>Telefone</th>
                     <th style={{ width: 120 }}>Ações</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {colaboradores.map(colab => (
-                    <tr key={colab.id}>
-                      <td>{colab.nome}</td>
-                      <td>{colab.cargo}</td>
-                      <td>{colab.email}</td>
-                      <td>{colab.telefone}</td>
+                  {clientes.map(cliente => (
+                    <tr key={cliente.id}>
+                      <td>{cliente.nome}</td>
+                      <td>{cliente.email}</td>
+                      <td>{cliente.telefone}</td>
                       <td>
-                        <Button size="sm" variant="warning" className="me-2" onClick={() => abrirModal(colab)}>
+                        <Button size="sm" variant="warning" className="me-2" onClick={() => abrirModal(cliente)}>
                           <FaEdit />
                         </Button>
-                        <Button size="sm" variant="danger" onClick={() => deletarColaborador(colab.id)}>
+                        <Button size="sm" variant="danger" onClick={() => deletarCliente(cliente.id)}>
                           <FaTrash />
                         </Button>
                       </td>
@@ -152,17 +150,13 @@ export default function Colaboradores() {
 
           <Modal show={mostrarModal} onHide={() => setMostrarModal(false)} centered>
             <Modal.Header closeButton>
-              <Modal.Title>{modoEdicao ? 'Editar Colaborador' : 'Novo Colaborador'}</Modal.Title>
+              <Modal.Title>{modoEdicao ? 'Editar Cliente' : 'Novo Cliente'}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              <Form onSubmit={salvarColaborador}>
+              <Form onSubmit={salvarCliente}>
                 <Form.Group className="mb-3">
                   <Form.Label>Nome</Form.Label>
                   <Form.Control type="text" value={form.nome} onChange={e => setForm({ ...form, nome: e.target.value })} required />
-                </Form.Group>
-                <Form.Group className="mb-3">
-                  <Form.Label>Cargo</Form.Label>
-                  <Form.Control type="text" value={form.cargo} onChange={e => setForm({ ...form, cargo: e.target.value })} />
                 </Form.Group>
                 <Form.Group className="mb-3">
                   <Form.Label>Email</Form.Label>
@@ -174,7 +168,7 @@ export default function Colaboradores() {
                 </Form.Group>
                 <div className="d-flex justify-content-end">
                   <Button type="submit" variant="success">
-                    {modoEdicao ? 'Salvar Alterações' : 'Criar Colaborador'}
+                    {modoEdicao ? 'Salvar Alterações' : 'Criar Cliente'}
                   </Button>
                 </div>
               </Form>

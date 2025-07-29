@@ -1,47 +1,65 @@
-.navbar {
-  border-radius: 0 0 20px 20px; /* Borda arredondada na parte inferior */
-  padding: 10px 0; /* Espaçamento interno */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra suave */
-}
+.menuItem {
+    border-radius: 4px;
+    margin: 0 4px;
+    transition: all 0.2s ease;
+    color: #2b2a27;
+    padding: 0.75rem 1rem;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    text-decoration: none;
+  }
+  
+  .menuItem:hover {
+    background-color: #f1f1f1;
+    color: #b49611;
+  }
+  
+  /* Corrige fundo azul, texto branco e ícone também */
+  .menuItemActive {
+    background-color: #000000;
+    color: white !important;
+  }
 
-.brandContainer {
+  .menuItemActive:hover {
+    background-color: #000000;
+    color: rgb(255, 255, 255) !important;
+  }
+  
+  .menuItemActive span {
+    color: rgb(255, 255, 255) !important;
+  }
+
+  .submenuContainer {
   display: flex;
-  align-items: center; /* Alinha a logo e o texto verticalmente */
+  flex-direction: column;
+  margin-left: 10px; /* Indenta visualmente sem empurrar layout */
+  margin-top: 4px;
 }
 
-.logo {
-  margin-right: 10px; /* Espaço entre a logo e o texto */
-  border-radius: 50%; /* Deixa a logo redonda (opcional) */
-  transition: transform 0.3s ease; /* Animação suave ao passar o mouse */
+.submenuItem {
+  padding: 6px 10px;
+  font-size: 0.95rem;
+  color: #555;
+  text-decoration: none;
+  border-radius: 4px;
+  transition: background-color 0.2s;
 }
 
-.logo:hover {
-  transform: scale(1.1); /* Efeito de zoom ao passar o mouse */
+.submenuItem:hover {
+  background-color: #f0f0f0;
+  color: #ffffff;
 }
 
-.brandText {
-  font-size: 1.8rem;
-  font-weight: bold;
-  color: #fff; /* Cor do texto */
+
+.arrowIcon {
+  transition: transform 0.2s ease;
+  margin-right: 8px;
+  transform: rotate(0deg); /* seta para a direita quando fechado */
 }
 
-.navLink {
-  font-size: 1.1rem;
-  margin-right: 20px;
-  color: #fff; /* Cor do texto */
-  transition: color 0.3s ease, text-decoration 0.3s ease; /* Transição suave */
+.arrowOpen {
+  transform: rotate(180deg); /* seta para baixo quando aberto */
 }
 
-.navLink:hover {
-  color: #28a745; /* Cor ao passar o mouse */
-  text-decoration: underline;
-}
-
-/* Estilo para o botão de toggle em telas pequenas */
-.navbar-toggler {
-  border-color: rgba(255, 255, 255, 0.1); /* Cor da borda */
-}
-
-.navbar-toggler-icon {
-  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(255, 255, 255, 0.8)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
-}
+  
